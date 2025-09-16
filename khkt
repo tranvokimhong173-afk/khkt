@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Định vị GPS & Cảm biến nhiệt độ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .card {
+      display: inline-block;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 12px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #0066cc;
+    }
+    .data {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>GPS & Nhiệt độ</h1>
+    <div class="data" id="location">Vị trí: Đang lấy...</div>
+    <div class="data" id="temperature">Nhiệt độ: -- °C</div>
+    <button onclick="getTemperature()">Cập nhật nhiệt độ</button>
+  </div>
+
+  <script>
+    // --- Lấy tọa độ GPS ---
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lon = pos.coords.longitude.toFixed(6);
+          document.getElementById("location").innerText = 
+            `Vĩ độ: ${lat}, Kinh độ: ${lon}`;
+        },
+        (err) => {
+          document.getElementById("location").innerText = 
+            "Không lấy được vị trí: " + err.message;
+        }
+      );
+    } else {
+      document.getElementById("location").innerText = 
+        "Trình duyệt không hỗ trợ GPS.";
+    }
+
+    // --- Giả lập cảm biến nhiệt độ ---
+    function getTemperature() {
+      const temp = (Math.random() * 10 + 25).toFixed(1); // 25.0 - 35.0 °C
+      document.getElementById("temperature").innerText = 
+        `Nhiệt độ: ${temp} °C`;
+    }
+  </script>
+</body>
+</html>
